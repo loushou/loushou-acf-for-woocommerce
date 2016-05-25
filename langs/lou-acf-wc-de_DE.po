@@ -1,0 +1,100 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Lou ACF for WooCommerce\n"
+"POT-Creation-Date: 2016-05-22 18:18-0800\n"
+"PO-Revision-Date: 2016-05-22 18:29-0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../index.php:107
+msgid "Loushou: ACF for WooCommerce"
+msgstr "Loushou: ACF for WooCommerce"
+
+#: ../index.php:125
+#, php-format
+msgid ""
+"Could not load %s because %s was not at least version %s. You are currently "
+"using version %s. Please update before using %s."
+msgstr ""
+"%s war nicht geladen, weil %s nicht mindestens Version %s war. Sie sind zur "
+"zeit version %s. Bitte aktualisieren sie %s bevor sie fortfahren."
+
+#: ../index.php:137
+#, php-format
+msgid ""
+"Could not load %s because the %s plugin is not active. Please activate %s "
+"first."
+msgstr ""
+"%s nicht geladen wurde, weil die %s plugin nicht aktiv ist. Bitte aktivieren "
+"%s zuerst."
+
+#: ../includes/core.class.php:37
+msgid "Clear"
+msgstr "Frei"
+
+#: ../includes/core.class.php:38
+msgid "Default"
+msgstr "Standard"
+
+#: ../includes/core.class.php:39
+msgid "Select Color"
+msgstr "Farbe wählen"
+
+#: ../includes/core.class.php:40
+msgid "Current Color"
+msgstr "Aktuelle Farbe"
+
+#: ../includes/location/_base-location.php:17
+#, php-format
+msgid "Location %d"
+msgstr "Lage: %d"
+
+#: ../includes/location/woocommerce/billing-address-myaccount.woocommerce.php:12
+msgid "My Account - Edit Billing Address"
+msgstr "Mein Konto - bearbeiten Rechnungsadresse"
+
+#: ../includes/location/woocommerce/checkout.woocommerce.php:12
+msgid "Checkout"
+msgstr "Auschecken"
+
+#: ../includes/location/woocommerce/myaccount.woocommerce.php:12
+msgid "My Account - Top"
+msgstr "Mein Konto - Oben"
+
+#: ../includes/location/woocommerce/myaccount.woocommerce.php:14
+msgid "My Account"
+msgstr "Mein Konto"
+
+#: ../includes/location/woocommerce/myaccount.woocommerce.php:122
+msgid "Your account information has been saved"
+msgstr "Ihr Konto dauen gespeichert"
+
+#: ../includes/location/woocommerce/myaccount.woocommerce.php:124
+msgid "Save"
+msgstr "Speichern"
+
+#: ../includes/location/woocommerce/shipping-address-myaccount.woocommerce.php:12
+msgid "My Account - Edit Shipping Address"
+msgstr "Mein Konto - bearbeiten Lieferadresse"
+
+#: ../includes/location-group/_base-location-group.php:21
+#, php-format
+msgid "Group %d"
+msgstr "Gruppe %d"
+
+#: ../includes/location-group/_base-location-group.php:26
+msgid "Forms"
+msgstr "Formulare"
+
+#: ../includes/location-group/woocommerce.location-group.php:12
+msgid "WooCommerce"
+msgstr "WooCommerce"
