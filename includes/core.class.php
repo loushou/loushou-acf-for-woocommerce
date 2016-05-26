@@ -14,6 +14,35 @@ class LOU_ACF_WC_Core extends LOU_ACF_Singleton {
 
 		// fix the acf input javascript so that it loads the color picker before itself also. this is a cor ACF bug
 		add_action( 'init', array( &$this, 'fix_acf_js_loading_bug' ), PHP_INT_MAX - 1000 );
+
+		// register the global js we might need
+		add_action( 'init', array( &$this, 'register_assets' ), PHP_INT_MAX - 1000 );
+
+		// load generic styling for the frontend field displays
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_assets' ), PHP_INT_MAX - 1000 );
+	}
+
+	// register our plugin js, that is not specific to any one new location
+	public function register_assets() {
+		// reused vars
+		$launcher = LOU_ACF_WC_Launcher::instance();
+		$uri = $launcher->plugin_url() . 'assets/';
+		$version = $launcher->version();
+
+		// register the google maps api
+		// REFERENCE: https://www.advancedcustomfields.com/resources/google-map/
+		wp_register_script( 'lou-acf-google-maps-api', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', array(), false, 1 );
+
+		// register our map loader script. make sure it loads at the bottom of the page
+		wp_register_script( 'lou-acf-load-maps', $uri . 'js/frontend/google-map.js', array( 'jquery', 'lou-acf-google-maps-api' ), $version, 1 );
+
+		// generic, low specificity styling for lou-acf frontend field displays
+		wp_register_style( 'lou-acf-frontend-fields', $uri . 'css/frontend/base.css', array(), $version );
+	}
+
+	// enqueue the frontend styles for basic styling of the lou-acf field displays
+	public function enqueue_assets() {
+		wp_enqueue_style( 'lou-acf-frontend-fields' );
 	}
 
 	// fixes a bug in the js registration for acf, where all the rquired js for input.js is not specified
@@ -54,8 +83,9 @@ class LOU_ACF_WC_Core extends LOU_ACF_Singleton {
 		// reused path
 		$dir = LOU_ACF_WC_Launcher::instance()->plugin_dir() . 'includes/';
 
-		// the helper class for accessing the ACF api
+		// the helper class for accessing the ACF api and the frontend field renderer
 		require_once $dir . 'helper/acf-api.helper.php';
+		require_once $dir . 'helper/acf-renderer.helper.php';
 
 		// load the base location group and base location
 		require_once $dir . 'location-group/_base-location-group.php';

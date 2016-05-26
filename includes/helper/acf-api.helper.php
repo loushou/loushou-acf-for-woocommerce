@@ -22,7 +22,14 @@ class LOU_ACF_API extends LOU_ACF_Singleton {
 
 	// determind which functions to use, based on what is available
 	public function initialize_functions() {
-		$this->funcs['get_field_groups'] = function_exists( 'acf_get_field_groups' ) ? 'acf_get_field_groups' : array( &$this, 'api_get_field_groups' );
+		// are we pro?
+		$pro = function_exists( 'acf_get_fields' );
+
+		// setup some functions
+		$this->funcs['get_field_groups'] = $pro ? 'acf_get_field_groups' : array( &$this, 'api_get_field_groups' );
+		$this->funcs['get_field_group_fields'] = $pro ? 'acf_get_fields' : array( &$this, 'filter_acf_get_fields' );
+		$this->funcs['sort_by_menu_order'] = $pro ? array( &$this, 'api_sort_by_menu_order' ) : array( &$this, 'api_sort_by_order_no' );
+		$this->funcs['translate_date_format'] = $pro ? array( &$this, 'no_translate_format' ) : array( &$this, 'translate_format' );
 	}
 
 	// start overriding the styling of the fields, so that the fields fit better into woocommerce forms
@@ -71,6 +78,59 @@ class LOU_ACF_API extends LOU_ACF_Singleton {
 		return $this->_filter_groups( $field_groups, $args );
 	}
 
+	// get the fields that are part of the given field group
+	public function api_get_field_group_fields( $field_group ) {
+		$fields = array();
+		// get the field_group_id
+		$group_id = $this->_get_field_group_id( $field_group );
+
+		// if there is no group_id, then bail
+		if ( empty( $group_id ) )
+			return $fields;
+
+		return $this->get_field_group_fields( $group_id );
+	}
+
+	// polyfill for the missing acf_get_fields function on non-pro
+	public function filter_acf_get_fields( $group_id ) {
+		return apply_filters( 'acf/field_group/get_fields', array(), $group_id );
+	}
+
+	// sort the array by the array key 'menu_order' (PRO ONLY)
+	public function api_sort_by_menu_order( $a, $b ) {
+		return isset( $a['menu_order'], $b['menu_order'] ) ? $a['menu_order'] - $b['menu_order'] : 0;
+	}
+
+	// sort the array by the array key 'order_no' (NON-PRO ONLY)
+	public function api_sort_by_order_no( $a, $b ) {
+		return isset( $a['order_no'], $b['order_no'] ) ? $a['order_no'] - $b['order_no'] : 0;
+	}
+
+	// function to determine the field_group group_id based on some supplied information
+	protected function _get_field_group_id( $field_group='' ) {
+		// get the field group field_group_id from the supplied info
+		$group_id = 0;
+
+		// get the post_id from the field group array
+		if ( is_array( $field_group ) && isset( $field_group['ID'] ) ) {
+			$group_id = absint( $field_group['ID'] );
+		// if the value supplied is a number, assume it is the field group post_id
+		} else if ( is_numeric( $field_group ) ) {
+			$group_id = absint( $field_group );
+		// if it is a string, assume it is the unique id of the group. use that to look up the group info, then extract the id
+		} else if ( is_string( $field_group ) ) {
+			// if we are using PRO then this matters, otherwise it doesnt
+			if ( function_exists( 'acf_is_field_group_key' ) ) {
+				if ( acf_is_field_group_key( $field_group ) ) {
+					$field_group = acf_get_field_group( $field_group );
+					$group_id = $field_group['ID'];
+				}
+			}
+		}
+
+		return $group_id;
+	}
+
 	// filter the list of groups, by the args supplied
 	protected function _filter_groups( $field_groups, $args ) {
 		// if we do not have any args or field groups, then bail
@@ -94,6 +154,7 @@ class LOU_ACF_API extends LOU_ACF_Singleton {
 		// cycle throguh
 		// vars
 		$args = wp_parse_args( $args, array(
+			// pro
 			'post_id' => 0,
 			'post_type' => 0,
 			'page_template' => 0,
@@ -110,7 +171,13 @@ class LOU_ACF_API extends LOU_ACF_Singleton {
 			'comment' => 0,
 			'widget' => 0,
 			'lang' => defined( 'ICL_LANGUAGE_CODE' ) ? ICL_LANGUAGE_CODE : '',
-			'ajax' => false
+			'ajax' => false,
+			
+			// non-pro extras
+			'post_category' => array(),
+			'ef_taxonomy' => 0,
+			'ef_user' => 0,
+			'ef_media' => 0,
 		) );
 		// filter for 3rd party customization
 		$args = apply_filters( 'acf/location/screen', $args, $group );
@@ -144,6 +211,102 @@ class LOU_ACF_API extends LOU_ACF_Singleton {
 		}
 
 		return $show;
+	}
+
+	// no translation needed (PRO ONLY)
+	public function no_translate_format( $format ) { return $format; }
+
+	// translate a jquery datepicker format into a php date format. (NON-PRO ONLY)
+	public function translate_format( $format ) {
+		// this is a simplified, reverse engineer of the below function
+		// first remove all escaped chars
+		$format = preg_replace( '#(\'[^\']\')#', '', $format );
+
+		// symbol map. ignore any that do not change between the formats
+		$SYMBOLS = array(
+			// two special cases, we need to temp replace first
+			'dd' => '?',
+			'mm' => '!',
+			// then the normal one to ones (so to speak)
+			'DD' => 'l',
+			'MM' => 'F',
+			'yy' => 'Y',
+			'd' => 'j',
+			'o' => 'z',
+			'm' => 'n',
+			// extra special, because of the way that str_replace works
+			'?' => 'd',
+			'!' => 'm',
+		);
+		// then do a symbol replace
+		$format = str_replace( array_keys( $SYMBOLS ), array_values( $SYMBOLS ), $format );
+
+		return $format;
+	}
+
+	// convert php to jquery date format
+	// REFERENCE: http://stackoverflow.com/questions/16702398/convert-a-php-date-format-to-a-jqueryui-datepicker-date-format
+	protected function _translate_format_to_jquery( $format ) {
+		$SYMBOLS_MATCHING = array(
+			// Day
+			'd' => 'dd',
+			'D' => 'D',
+			'j' => 'd',
+			'l' => 'DD',
+			'N' => '',
+			'S' => '',
+			'w' => '',
+			'z' => 'o',
+			// Week
+			'W' => '',
+			// Month
+			'F' => 'MM',
+			'm' => 'mm',
+			'M' => 'M',
+			'n' => 'm',
+			't' => '',
+			// Year
+			'L' => '',
+			'o' => '',
+			'Y' => 'yy',
+			'y' => 'y',
+			// Time
+			'a' => '',
+			'A' => '',
+			'B' => '',
+			'g' => '',
+			'G' => '',
+			'h' => '',
+			'H' => '',
+			'i' => '',
+			's' => '',
+			'u' => ''
+		);
+		$jqueryui_format = "";
+		$escaping = false;
+		for( $i = 0; $i < strlen( $php_format ); $i++ ) {
+			$char = $php_format[ $i ];
+			// PHP date format escaping character
+			if ($char === '\\') {
+				$i++;
+				if ( $escaping )
+					$jqueryui_format .= $php_format[$i];
+				else
+					$jqueryui_format .= '\'' . $php_format[$i];
+				$escaping = true;
+			} else {
+				if ( $escaping ) {
+					$jqueryui_format .= "'";
+					$escaping = false;
+				}
+				if ( isset( $SYMBOLS_MATCHING[ $char ] ) )
+					$jqueryui_format .= $SYMBOLS_MATCHING[ $char ];
+				else
+					$jqueryui_format .= $char;
+			}
+		}
+		return $jqueryui_format;
+
 	}
 }
 
