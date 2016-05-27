@@ -62,6 +62,13 @@ Via SSH:
 
 Using the normal ACF interface, when you select the 'Location' -> 'Rules' (most of the time you select 'post type' and 'post' in this area), you will choose 'WooCommerce' as the first drop down under 'Show this field group if' and either 'Checkout' or 'My Account' as the value of the thrid drop down (next to the 'and' button). Once you save, the fields will appear on the checkout or my account page, appropriately.
 
+== Screenshots ==
+1. Make sure you have the required plugins installed, up to date, and activated.
+2. You can easily assign an ACF group the the WooCommerce Checkout.
+3. Assigning an ACF group to the My Account page is pretty easy too.
+4. You can see the fields are embeded in the checkout form. Make sure to style them as you see fit, with your theme.
+5. Viewing your My Account page, you can see that your fields get their own section on the page. Make sure to style them as you see fit, with your theme.
+
 == Changelog ==
 
 = 1.0 =
