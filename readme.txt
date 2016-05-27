@@ -1,20 +1,44 @@
 === Loushou: ACF for WooCommerce ===
 Contributors: loushou
 Donate link: http://looseshoe.com/
-Tags: acf, woocommerce, advanced custom fields, my account, checkout
+Tags: acf, woocommerce, advanced custom fields, my account, checkout, product category, archive product
 Requires at least: 4.5
 Tested up to: 4.5.2
 Stable tag: trunk
 License: GNU General Public License, version 3 (GPL-3.0)
 License URI: http://www.gnu.org/copyleft/gpl.html
 
-A plugin that creates some much needed communication between Advanced Custom Fields and WooCommerce.
+Allows you to add fields to the WooCommerce Checkout and My Account pages, or display fields you setup on a Product Category, on the Archive Product page.
 
 == Description ==
 
+= Why? =
 Many developers I know consider Advanced Custom Fields a must have plugin on most of their website work, and I am sure that idea permeates the entire community. WooCommerce has been the leading eCommerce engine in the world, for quite some time now. Both of these plugins are in the list of the top used plugins on the repository. As such, it is about time that someone write a bridge between the two.
 
 That is where I come in. This plugin is made to allow an admin user, or developer, to create ACFs using the normal ACF interface, and assign them to some of the common pages of WooCommerce, without any additional work, or coding. Adding fields to the checkout or My Account page is now as easy as pointing and clicking, inside the already familiar interface of ACF (and ACF Pro).
+
+= What you can do now: =
+Using this plugin, you currently have the ability to:
+* Add a field group to the WooCommerce Checkout flow
+    * The fields save as part of the order itself
+    * Don't forget to also assign the Post Type -> Shop Order 'location' in ACF setup
+* Add a field group to the My Account page, or the Edit Billing/Shipping Address My Account Page
+    * The fields save as part of the User
+		* Don't forget to also assign the User Role -> All 'location' in ACF setup
+* Display fields you have setup on Product Categories
+    * You can display them above or below the list of products
+		* You can modify the output with actions and hooks (for developers)
+
+= What is to come: +
+I plan on adding support to:
+* Display fields on the Shop page
+* Display fields on the Product page
+* Add Tabs to the Product page
+* Add field groups to the Product meta and have it save as part of the cart items (like for personalization)
+* I am sure there are more that I am not thinking of...
+
+= What if you have ideas: =
+I am always open to suggestions, especially on how to make this plugin more usable and useful. If you have an idea of a new feature that is not listed above, or an expansion on one of the listed ideas, then hit me up.
 
 I really hope this helps others, because I know it will help me, and at least the devs I know.
 
