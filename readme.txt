@@ -71,5 +71,9 @@ Using the normal ACF interface, when you select the 'Location' -> 'Rules' (most 
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.0 =
+* [new] added ability to assign display of fields to top and bottom of Archive Product templates
+* [new] added recursive frontend render support for flexible content and repeater fields
+
+= 1.0.0 =
 * Created an awesome plugin that hopefully others will use
