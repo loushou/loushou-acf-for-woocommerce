@@ -71,5 +71,5 @@ Using the normal ACF interface, when you select the 'Location' -> 'Rules' (most 
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0 =
 * Created an awesome plugin that hopefully others will use
