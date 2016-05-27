@@ -3,7 +3,7 @@
  * Plugin Name: Loushou: ACF for WooCommerce
  * Plugin URI:  http://looseshoe.com/
  * Description: A plugin to integrate ACF with WooCommerce
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Loushou
  * Author URI:  http://looseshoe.com/
  * License: GNU General Public License, version 3 (GPL-3.0)
@@ -24,7 +24,7 @@ class LOU_ACF_WC_Launcher {
 
 	// container for some rather static plugin data that we should only calculate once
 	protected $_name = null;
-	protected $_version = '1.0.0';
+	protected $_version = '1.1.0';
 	protected $_me = null;
 	protected $_plugin_dir = null;
 	protected $_plugin_url = null;
