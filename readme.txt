@@ -21,6 +21,7 @@ That is where I come in. This plugin is made to allow an admin user, or develope
 = What you can do now: =
 
 Using this plugin, you currently have the ability to:
+
 * Add a field group to the WooCommerce Checkout flow
     * The fields save as part of the order itself
     * Don't forget to also assign the Post Type -> Shop Order 'location' in ACF setup
@@ -34,6 +35,7 @@ Using this plugin, you currently have the ability to:
 = What is to come: =
 
 I plan on adding support to:
+
 * Display fields on the Shop page
 * Display fields on the Product page
 * Add Tabs to the Product page
